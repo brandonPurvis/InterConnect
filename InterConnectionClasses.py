@@ -2,6 +2,10 @@ import SocketServer
 import socket
 import time
 
+__AUTHOR__ = "Brandon Purvis"
+__VERSION__ = "0.1"
+
+
 class SocketScanner:
     """A wrapper around a socket object."""
     
