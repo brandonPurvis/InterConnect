@@ -10,6 +10,13 @@ class SocketScanner:
     """A wrapper around a socket object."""
     
     def __init__(self, socket, name = "SocketScanner"):
+        """
+        Wrapper around a socket providing easy I/O interfacing
+
+        socket: socket object,
+        name = sting.
+
+        """ 
         self.name = name
         self.s = socket
 
@@ -22,11 +29,38 @@ class SocketScanner:
         message = self.s.recv(1024)
         return message
 
+    def nextLine2(self):
+        """Return input data untill a new line character is recived."""
+        message = ""
+        char = self.socket.recv(1)
+        while not (char == "\n"):
+            message += char
+        return message 
+
+    def next(self):
+        """Return all available data"""
+        print("Receiving Data...")
+        dataIn = self.s.recv(1024)
+        print ("IN: {}".format(dataIn))
+        while True:
+            more = self.s.recv(1024)
+            print("PLUS: {}".format(more))
+            if more == "":
+                print("DONE")
+                return datain
+            else:
+                dataIn += more
+
 class InterConnection:
     """Represents a line of communication between two entities."""
     
     def __init__(self, ip, port = 41000, name = "PythonSocket", host = False):
-        
+        """Manages a socket connection between it and a seprate interconnection
+        class
+
+        ip:string, port:integer, name:string, host: boolean
+
+        """
         self.port = port
         self.name = name
         self.connected = True
@@ -39,8 +73,10 @@ class InterConnection:
 
     def addMethod(self, call, func):
         """Add a call and a function to the set of methods
-        call - A string
-        func - function called when the call is received.
+
+        call: string
+        func: function - called when the call is received.
+
         """
         self.methods[call] = func
 
@@ -49,15 +85,19 @@ class InterConnection:
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.bind((ip, port))
+        print("HOSTING CONNECTION IP: {} | PORT:{}".format(ip, port))
         s.listen(1)
         sck, address = s.accept()
+        print("CONNECTED TO {}".format(address))
         
         return SocketScanner(sck, self.name)
         
     def connectToHost(self, ip, port):
         """Connect to a host with the given ip at the given port.
-        ip - string
-        port - integer
+
+        ip: string
+        port: integer
+
         """
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((ip, port))
@@ -66,7 +106,9 @@ class InterConnection:
 
     def send(self, data):
         """Send the given data over the socket.
-        data - String 
+
+        data: string
+
         """
         data = data + "\n"
         self.socket.printLine(data)
@@ -77,15 +119,22 @@ class InterConnection:
         line = self.socket.nextLine()
         return line 
 
+    # TODO: fix recieve all
+    def receiveAll(self):
+        """Read in all data"""
+        raise NotImplementedError
+        lines = self.socket.next()
+        return lines
+    
     def callMethod(self, call, params):
         """Call Method on the other side of the connection."""
         message = call
         for p in params:
             message += " " + p
         self.send(message)
-        resp = self.receive()
+        resp = self.receiveAll()
         while len(resp) < 1:
-            resp = self.receive()
+            resp = self.receiveAll()
         return resp
         
     def verify(self):
@@ -95,6 +144,7 @@ class InterConnection:
         verification protocol:
             send 'VERIFY'
             receive 'ACK'
+            
         """
         self.send("VERIFY")        
         resp = self.receive()
@@ -104,9 +154,11 @@ class InterConnection:
         return resp == "ACK"
 
     def listenLoop(self):
-        """Continiously read in recieved data, responding according to
+        """
+        Continiously read in recieved data, responding according to
         methods in the method dictionary, when given a recognized call
         name.
+
         """
         while self.connected:
             # Listen
