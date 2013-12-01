@@ -12,7 +12,7 @@ def ECHO(params):
         message += string
     return message
     
-connect = icc.InterConnection("localhost",40000,host=True)
+connect = icc.InterConnection("localhost",40001,host=True)
 connect.addMethod("WHO", lambda x: WHO(connect))
 connect.addMethod("END", lambda x: END())
 connect.addMethod("ECHO",lambda x: ECHO(x))

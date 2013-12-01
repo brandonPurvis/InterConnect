@@ -2,12 +2,12 @@ import InterConnectionClasses as icc
 # Python Client
 
 
-ip = "192.168.1.2"
-port = 40000
+ip = icc.socket.gethostbyname(icc.socket.gethostname())
+port = 40001
+
 print("Python Client:")
 print("IP: {}".format(ip))
 print("PORT: {}".format(port))
-
 connection = icc.InterConnection(ip, port, name = "LabtopClient", host = False)
 print("Connected")
 
