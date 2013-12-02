@@ -1,4 +1,4 @@
-import SocketServer
+from SocketScanner import *
 import socket
 import time
 
