@@ -30,7 +30,7 @@ class SocketScanner:
             message += char
         return message 
 
-    def print(self, message):
+    def print_(self, message):
         """send message over the socket. """
         self.s.send(message)
 
@@ -54,7 +54,7 @@ class SocketScannerLenProto(SocketScanner):
     def __init__(self, socket, name = "SocketScannerLength"):
         SocketScanner.__init__(self, socket, name)
 
-    def print(self, message):
+    def print_(self, message):
         """Send message through socket."""
 
         messageLength = len(message)
@@ -62,7 +62,14 @@ class SocketScannerLenProto(SocketScanner):
         self.s.send(lenProtoMessage)
 
     def nextLine(self):
-        
+        message = " "
+        while True:
+            char = self.s.recv(1)
+            if (char != "\n"):
+                message += char
+            else:
+                break
+        return message
 
     def next(self):
         """recieve message from socket"""

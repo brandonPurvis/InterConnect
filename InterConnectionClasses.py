@@ -65,14 +65,13 @@ class InterConnection:
 
         """
         data = data + "\n"
-        self.socket.printLine(data)
+        self.socket.print_(data)
 
     def receive(self):
         """Read in data from the socket."""        
         line = self.socket.next()
         return line 
 
-    # TODO: fix recieve all
     def receiveLine(self):
         """Read in all data"""
         lines = self.socket.nextLine()
@@ -84,9 +83,9 @@ class InterConnection:
         for p in params:
             message += " " + p
         self.send(message)
-        resp = self.receiveAll()
+        resp = self.receive()
         while len(resp) < 1:
-            resp = self.receiveAll()
+            resp = self.receive()
         return resp
         
     def verify(self):
@@ -127,8 +126,14 @@ class InterConnection:
 
                 if method in self.methods.keys():
                     print("Recognized Input")
-                    func = self.methods[method]
-                    ans = func(params)
+                    try:
+                        func = self.methods[method]
+                        ans = func(params)
+                    except:
+                        print("FUNCTION FAILED")
+                        self.send("FAILED")
+                        self.send("END")
+                        
                     print("OUT: " + ans)
                     self.send(ans)
 
