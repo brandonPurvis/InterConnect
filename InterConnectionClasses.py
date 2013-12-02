@@ -68,16 +68,14 @@ class InterConnection:
         self.socket.printLine(data)
 
     def receive(self):
-        """Read in data from the socket, up to a new line character."""
-        
-        line = self.socket.nextLine()
+        """Read in data from the socket."""        
+        line = self.socket.next()
         return line 
 
     # TODO: fix recieve all
-    def receiveAll(self):
+    def receiveLine(self):
         """Read in all data"""
-        raise NotImplementedError
-        lines = self.socket.next()
+        lines = self.socket.nextLine()
         return lines
     
     def callMethod(self, call, params):
