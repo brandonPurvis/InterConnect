@@ -5,52 +5,6 @@ import time
 __AUTHOR__ = "Brandon Purvis"
 __VERSION__ = "0.1"
 
-
-class SocketScanner:
-    """A wrapper around a socket object."""
-    
-    def __init__(self, socket, name = "SocketScanner"):
-        """
-        Wrapper around a socket providing easy I/O interfacing
-
-        socket: socket object,
-        name = sting.
-
-        """ 
-        self.name = name
-        self.s = socket
-
-    def printLine(self,line):
-        """Send a line of text over the socket."""
-        self.s.send(line + "\n")
-
-    def nextLine(self):
-        """Return the next line of text received by the socket."""
-        message = self.s.recv(1024)
-        return message
-
-    def nextLine2(self):
-        """Return input data untill a new line character is recived."""
-        message = ""
-        char = self.socket.recv(1)
-        while not (char == "\n"):
-            message += char
-        return message 
-
-    def next(self):
-        """Return all available data"""
-        print("Receiving Data...")
-        dataIn = self.s.recv(1024)
-        print ("IN: {}".format(dataIn))
-        while True:
-            more = self.s.recv(1024)
-            print("PLUS: {}".format(more))
-            if more == "":
-                print("DONE")
-                return datain
-            else:
-                dataIn += more
-
 class InterConnection:
     """Represents a line of communication between two entities."""
     
