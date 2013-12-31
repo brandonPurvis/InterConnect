@@ -1,14 +1,21 @@
 import InterConnectionClasses as icc
+import sys
 # Python Client
 
+# DEFAULTS
+IP = icc.socket.gethostbyname(icc.socket.gethostname())
+PORT = 40000
 
-ip = icc.socket.gethostbyname(icc.socket.gethostname())
-port = 40001
+# SPECIFIED
+ARGS = sys.argv
+if len(ARGS) >= 2:
+    IP = ARGS[1]
+    PORT = ARGS[2]
 
 print("Python Client:")
-print("IP: {}".format(ip))
-print("PORT: {}".format(port))
-connection = icc.InterConnection(ip, port, name = "LabtopClient", host = False)
+print("IP: {}".format(IP))
+print("PORT: {}".format(PORT))
+connection = icc.InterConnection(IP, PORT, name = "LabtopClient", host = False)
 print("Connected")
 
 if __name__ == "__main__":
